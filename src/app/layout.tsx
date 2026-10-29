@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { THEME_BOOT_SCRIPT } from "@/lib/client/prefs";
+import { THEME_BOOT_SCRIPT } from "@/lib/client/storage";
 import "./globals.css";
 
 export const metadata: Metadata = {

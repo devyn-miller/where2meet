@@ -35,3 +35,6 @@ export const keys = {
   units: "w2m:units",
   theme: "w2m:theme",
 };
+
+/** Runs before paint (inlined in the layout) so the page doesn't flash the wrong theme. */
+export const THEME_BOOT_SCRIPT = `try{var t=JSON.parse(localStorage.getItem("${keys.theme}"));if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;

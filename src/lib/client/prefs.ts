@@ -6,9 +6,6 @@ import { keys, storage } from "./storage";
 
 export type ThemePref = "system" | "light" | "dark";
 
-/** Runs before paint (inlined in the layout) so the page doesn't flash the wrong theme. */
-export const THEME_BOOT_SCRIPT = `try{var t=JSON.parse(localStorage.getItem("${keys.theme}"));if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}`;
-
 export function useTheme() {
   const [pref, setPrefState] = useState<ThemePref>("system");
   const [systemDark, setSystemDark] = useState(false);
