@@ -147,3 +147,4 @@ revoke all on public.event_secrets, public.participant_secrets,
               public.ors_matrix_cache, public.ors_usage from anon, authenticated;
 revoke insert, update, delete on public.events, public.participants from anon, authenticated;
 revoke execute on function public.increment_ors_usage(date, text, integer) from public, anon, authenticated;
+grant execute on function public.increment_ors_usage(date, text, integer) to service_role;

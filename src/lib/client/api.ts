@@ -57,14 +57,13 @@ export const api = {
     patch: { name?: string; lat?: number | null; lng?: number | null; precision?: Precision; weight?: number },
   ) => call<{ participant: ParticipantPublic }>(id, `/api/events/${id}/participants/${pid}`, "PATCH", patch),
   removeParticipant: (id: string, pid: string) => call<{ ok: true }>(id, `/api/events/${id}/participants/${pid}`, "DELETE"),
-  geocode: (id: string, q: string, focus?: { lat: number; lng: number }) => {
-    const params = new URLSearchParams({ event: id, q });
-    if (focus) {
-      params.set("lat", focus.lat.toFixed(2));
-      params.set("lng", focus.lng.toFixed(2));
-    }
-    return call<{ results: { label: string; lat: number; lng: number }[]; unavailable: boolean }>(null, `/api/geocode?${params}`);
-  },
+  geocode: (id: string, q: string, focus?: { lat: number; lng: number }) =>
+    call<{ results: { label: string; lat: number; lng: number }[]; unavailable: boolean }>(null, "/api/geocode", "POST", {
+      event: id,
+      q,
+      // Only a coarse hint, to bias results toward the group.
+      focus: focus && { lat: Math.round(focus.lat * 10) / 10, lng: Math.round(focus.lng * 10) / 10 },
+    }),
   places: (id: string, filter: PlaceFilter) =>
     call<{ places: Place[]; unavailable: boolean }>(null, `/api/events/${id}/places?filter=${filter}`),
 };

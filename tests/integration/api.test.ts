@@ -4,7 +4,7 @@ import { GET as getEvent, PATCH as patchEvent } from "@/app/api/events/[id]/rout
 import { POST as join } from "@/app/api/events/[id]/participants/route";
 import { DELETE as removeParticipant, PATCH as patchParticipant } from "@/app/api/events/[id]/participants/[pid]/route";
 import { GET as places } from "@/app/api/events/[id]/places/route";
-import { GET as geocode } from "@/app/api/geocode/route";
+import { POST as geocode } from "@/app/api/geocode/route";
 import { haversineKm } from "@/lib/geo";
 import { MemoryStore } from "@/lib/server/memory-store";
 import { OrsClient, setOrs } from "@/lib/server/ors";
@@ -137,7 +137,7 @@ describe("API with mocked openrouteservice", () => {
     const { id, add } = await setup();
     await add("A", 40.7, -74.1);
     await add("B", 40.8, -73.9);
-    const g = await (await geocode(req("GET", `/api/geocode?event=${id}&q=empire+state`))).json();
+    const g = await (await geocode(req("POST", "/api/geocode", { event: id, q: "empire state" }))).json();
     expect(g.results[0]).toMatchObject({ label: expect.stringContaining("Empire"), lat: 40.74844 });
     const pl = await (await places(req("GET", `/api/events/${id}/places?filter=coffee`), p({ id }))).json();
     expect(pl.places).toHaveLength(1);
