@@ -11,8 +11,25 @@ interface ParticipantRow extends ParticipantPublic {
   createdAt: number;
 }
 
-const publicEvent = ({ organizerTokenHash: _o, ...e }: EventRow): EventPublic => structuredClone(e);
-const publicParticipant = ({ eventId: _e, editTokenHash: _t, createdAt: _c, ...p }: ParticipantRow): ParticipantPublic => ({ ...p });
+const publicEvent = (e: EventRow): EventPublic =>
+  structuredClone({
+    id: e.id,
+    name: e.name,
+    meetingAt: e.meetingAt,
+    mode: e.mode,
+    priority: e.priority,
+    version: e.version,
+    result: e.result,
+    createdAt: e.createdAt,
+  });
+const publicParticipant = (p: ParticipantRow): ParticipantPublic => ({
+  id: p.id,
+  name: p.name,
+  lat: p.lat,
+  lng: p.lng,
+  precision: p.precision,
+  weight: p.weight,
+});
 
 /** In-process store for local development and tests. Not for production. */
 export class MemoryStore implements Store {
